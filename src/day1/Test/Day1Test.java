@@ -12,14 +12,14 @@ public class Day1Test {
             }
         }
         if (checker == 1) {
-            System.out.print(numbers + " adalah bilangan prima");
+            System.out.println(numbers + " adalah bilangan prima");
         } else {
             System.out.println(numbers + " bukan nilangan prima");
         }
 
         /* Buat logic untuk mencari nilai terbesar dan terkecil dari sebuah array pake math Method */
 
-        System.out.println("== NO.2 ==");
+
         int[] angka = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
         int min = angka[0];
@@ -29,7 +29,7 @@ public class Day1Test {
             min = Math.min(min, num);
             max = Math.max(max, num);
         }
-        System.out.println("== NO.3 ==");
+        System.out.println("== NO.2 ==");
         System.out.println("Nilai Terendah: " + min);
         System.out.println("Nilai Tertinggi: " + max);
 
@@ -56,9 +56,9 @@ public class Day1Test {
         // 4.Buat logic untuk mnghitung jumlah karakter dalam sebuah string
         String kata = "aku sedang belajar java ";
 
-
-        System.out.println("Jumlah karakter = " + kata.length());
         System.out.println("== NO.4 ==");
+        System.out.println("Jumlah karakter = " + kata.length());
+
 
         // 5. Buat logic untuk menghitung jumlah huruf vocal dalam string 'kata'
 
@@ -71,7 +71,7 @@ public class Day1Test {
             }
         }
 
-        System.out.println("== SOAL NO.5 ==");
+        System.out.println("== SOAL NO.5==");
         System.out.println("Jumlah huruf vokal: " + hurufVokal);
 
 
