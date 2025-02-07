@@ -9,13 +9,15 @@ public class Main {
         User user = new User("Danu",20);
 
         UserInterface userActions = new UserInterface() {
+
             @Override
             public void displayUser() {
-                System.out.println("user name : " + user.getName();
+                System.out.println("user name : " + user.getName());
                 System.out.println("user age : " + user.getAge());
             }
+
             @Override
-            public void UpdateUser() {
+            public void updateUser() {
                 System.out.println("User Update");
             }
         };

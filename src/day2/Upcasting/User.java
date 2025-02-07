@@ -1,7 +1,7 @@
 package day2.Upcasting;
 // superclass pparent class
 public class User {
-    void login (){
+    void login(){
         System.out.println("Login succes!");
     }
 }
