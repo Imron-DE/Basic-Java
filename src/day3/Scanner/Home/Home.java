@@ -2,6 +2,8 @@ package day3.Scanner.Home;
 
 
 import day3.Scanner.Products.ProductMain;
+import day3.Scanner.Review.Review;
+import day3.Scanner.Review.ReviewManager;
 
 import java.util.Scanner;
 
@@ -19,6 +21,7 @@ public class Home {
         System.out.println("pilih menu");
         Menu mymenu= Menu.valueOf(input.nextLine().toUpperCase());
 
+
         switch (mymenu){
             case LOGIN:
                 System.out.println("login success");
@@ -35,6 +38,8 @@ public class Home {
                 break;
             case REVIEW:
                 System.out.println("Navigate to review page");
+                ReviewManager reviewManager = new ReviewManager();
+                reviewManager.handleReview(input);
                 // buat menu review yang bisa menambahkan reviewer dan rating (int).kemudian tampilakan semua reviewnya  
                 break;
         }

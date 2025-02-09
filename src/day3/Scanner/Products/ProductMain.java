@@ -7,8 +7,13 @@ public class ProductMain {
     public static void main() {
         Products.ProductController productController =new Products.ProductController();
 
+
+
+
+
         Scanner input= new Scanner(System.in);
         System.out.println("===PRODUCT LIST ===");
+
         productController.displayAllProducts();
         System.out.println("====================");
 
@@ -30,7 +35,6 @@ public class ProductMain {
                 input.nextLine();
                 System.out.print("Kategori => ");
                 String kategori = input.nextLine();
-                input.nextLine();
 
                 Products products = new Products(nama,harga,kategori);
                 productController.addProduct(products);
@@ -42,14 +46,38 @@ public class ProductMain {
         System.out.println("====================");
 
         System.out.println("=== SORT PRODUCTS BY PRICE ===");
+        productController.sortProductsByPrice();
+        productController.displayAllProducts();
         // sort method
         System.out.println("====================");
 
         System.out.println("Apakah andda ingin mencari produk (Y/N)");
+        String searchChoice = input.nextLine().toLowerCase();
         // method & logic untuk mencari product berdasarkan nama
 
         // buat method save product ke file
 
         // buat methode read file product
+        if (searchChoice.equals("y")) {
+            System.out.print("Masukkan nama produk yang ingin dicari: ");
+            String searchName = input.nextLine();
+            Products foundProduct = productController.searchProductByName(searchName);
+
+            if (foundProduct != null) {
+                System.out.println("Produk ditemukan: " + foundProduct.name + ", Harga: " + foundProduct.price + ", Kategori: " + foundProduct.category);
+            } else {
+                System.out.println("Produk dengan nama " + searchName + " tidak ditemukan.");
+            }
+        }
+
+        // Menyimpan produk ke file menggunakan BufferedWriter
+        System.out.println("Simpan produk ke file (Y/N)?");
+        String saveChoice = input.nextLine().toLowerCase();
+
+        if (saveChoice.equals("y")) {
+            String filePath = "D:\\Bootcampp Aigen\\Basic-java\\basic-java\\src\\day3\\Scanner\\Products\\product.txt";
+            productController.saveProductsToFile(filePath);
+        }
+
     }
 }
