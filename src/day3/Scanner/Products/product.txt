@@ -1,0 +1,3 @@
+Nama: handphone, Harga: 7000000.0, Kategori: Electronic
+Nama: Laptop, Harga: 7000000.0, Kategori: Elektronic
+
