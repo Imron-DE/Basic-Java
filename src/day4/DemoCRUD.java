@@ -15,6 +15,7 @@ public class DemoCRUD {
     String password = "admin";
     Scanner input = new Scanner(System.in);
 
+
     public  void getData(){
         try{
                 // DriverManager.getConnection : untuk menghubungkan ke database
@@ -29,7 +30,7 @@ public class DemoCRUD {
                 // ambil jumlah kolom
                 int columnCount = metaData.getColumnCount();
 
-                // ObjectMapper : untuk mapping data ke forat JSON
+                // ObjectMapper : untuk mapping data ke format JSON
                 ObjectMapper mapper = new ObjectMapper();
                 // ArrayNode buat nampung data ke array of object(JSON)
                 ArrayNode arrNode = mapper.createArrayNode();// buat array kosong
@@ -41,7 +42,7 @@ public class DemoCRUD {
                             objNode.put(columnName, resultSet.getString(i));
 
                     }
-                    // masukin data objek yang udah diloopng ke array
+                    // masukin data objek yang udah dilooping ke array
                     arrNode.add(objNode);
 
                 }
@@ -139,40 +140,87 @@ public class DemoCRUD {
         }
     }
     public void orderData() {
+        System.out.println("Masukkan ID produk yang ingin dipesan (ketik 0 untuk batal): ");
+        int id = input.nextInt();
+        input.nextLine(); // Buang newline agar tidak terjadi error saat membaca String selanjutnya
 
-            System.out.println("Masukan id produk :");
-            int id = input.nextInt();
+        // Jika user mengetik 0, batalkan pemesanan
+        if (id == 0) {
+            System.out.println("Pemesanan dibatalkan.");
+            return;
+        }
 
-            System.out.println("Masukan quantity produk :");
-            int quantity = input.nextInt();
+        // Tampilkan informasi produk sebelum melanjutkan
+        showProductDetails(id);
 
-            try {
+        System.out.println("Masukkan jumlah produk yang ingin dipesan (ketik 0 untuk batal): ");
+        int quantity = input.nextInt();
+        input.nextLine();
 
-                Connection connection = DriverManager.getConnection(url, username, password);
-                PreparedStatement preparedStatement = connection.prepareStatement("insert into orders (product_id, order_date, quantity) values (?, ?, ?)");
-                preparedStatement.setInt(1, id);
-                preparedStatement.setDate(2,Date.valueOf(String.valueOf(LocalDate.now()))  );;
-                preparedStatement.setInt(3, quantity);
+        // Jika user mengetik 0, batalkan pemesanan
+        if (quantity == 0) {
+            System.out.println("Pemesanan dibatalkan.");
+            return;
+        }
 
-                int productOrder = preparedStatement.executeUpdate();
-                if (productOrder > 0) {
-                    System.out.println("Data berhasil ditambahkan ke tabel orders!");
-                }
+        // Konfirmasi pemesanan
+        System.out.println("Konfirmasi pemesanan? (Y/N): ");
+        String confirm = input.nextLine().trim().toLowerCase();
 
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
+        if (!confirm.equals("y")) {
+            System.out.println("Pemesanan dibatalkan.");
+            return;
+        }
+
+        // Eksekusi pemesanan setelah konfirmasi
+        try (Connection connection = DriverManager.getConnection(url, username, password)) {
+            String query = "INSERT INTO orders (product_id, order_date, quantity) VALUES (?, ?, ?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, id);
+            preparedStatement.setDate(2, Date.valueOf(LocalDate.now()));
+            preparedStatement.setInt(3, quantity);
+
+            int result = preparedStatement.executeUpdate();
+            if (result > 0) {
+                System.out.println("✅ Pesanan berhasil ditambahkan ke tabel orders!");
             }
 
-
+        } catch (SQLException e) {
+            System.err.println("⚠️ Terjadi kesalahan: " + e.getMessage());
+        }
     }
+
+    private void showProductDetails(int id) {
+        try (Connection connection = DriverManager.getConnection(url, username, password)) {
+            String query = "SELECT * FROM products WHERE id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                System.out.println("\n📌 Detail Produk:");
+                System.out.println("ID: " + resultSet.getInt("id"));
+                System.out.println("Nama: " + resultSet.getString("product_name"));
+                System.out.println("Harga: " + resultSet.getDouble("product_price"));
+                System.out.println("Kategori: " + resultSet.getString("category"));
+            } else {
+                System.out.println("⚠️ Produk dengan ID " + id + " tidak ditemukan.");
+            }
+        } catch (SQLException e) {
+            System.err.println("⚠️ Terjadi kesalahan: " + e.getMessage());
+        }
+    }
+
 
 
 
     public static void main(String[] args) {
         DemoCRUD demo = new DemoCRUD();
         Scanner input = new Scanner(System.in);
+        String pilihanUser;
+        boolean isLanjutkan = true;
 
-        while (true){
+        while (isLanjutkan){
             System.out.println("===Menu===");
             System.out.println("1. View all product");
             System.out.println("2. Add new product");
@@ -203,7 +251,11 @@ public class DemoCRUD {
                 default:
                     System.out.println("input tidak valid");
             }
-
+            System.out.println("\nApakah anda ingin melanjutkan (Y/N)?");
+            pilihanUser = input.next();
+            isLanjutkan = pilihanUser.equalsIgnoreCase("y");
         }
+
+
     }
 }

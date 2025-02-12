@@ -7,10 +7,6 @@ public class ProductMain {
     public static void main() {
         Products.ProductController productController =new Products.ProductController();
 
-
-
-
-
         Scanner input= new Scanner(System.in);
         System.out.println("===PRODUCT LIST ===");
 
